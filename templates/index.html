@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Datos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Ingresar Datos</h1>
+    <form id="dataForm">
+        <input type="text" name="data" placeholder="Ingrese datos" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <div id="response"></div>
+
+    <h2>Respuesta de Telegram:</h2>
+    <div id="telegramResponse">Esperando respuesta...</div>
+
+    <script>
+        const socket = io();
+
+        // Manejo del formulario
+        document.getElementById('dataForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('/submit', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            document.getElementById('response').innerText = result.message;
+        });
+
+        // Escuchar respuestas de Telegram
+        socket.on('telegram_response', (data) => {
+            document.getElementById('telegramResponse').innerText = data.response;
+        });
+    </script>
+</body>
+</html>
