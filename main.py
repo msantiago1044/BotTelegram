@@ -77,5 +77,7 @@ if __name__ == '__main__':
     print("Webhook configurado:", response.json())
     
     # Ejecutar la app Flask con soporte de SocketIO
-    socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)
+    port = int(os.environ.get("PORT", 5000))  # Obtiene el puerto desde las variables de entorno
+    socketio.run(app, host="0.0.0.0", port=port, allow_unsafe_werkzeug=True)
+
 
