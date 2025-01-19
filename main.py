@@ -10,14 +10,10 @@ TOKEN = "7960598167:AAHebdzdX9DY2yYvcaGSDP0U6csATq87nyk"
 CHAT_ID = "-1002289203228"
 WEBHOOK_URL = "https://web-production-dae16.up.railway.app"
 
+# Ruta principal: Página web
 @app.route('/')
 def index():
-    return "¡El servidor está funcionando correctamente!"
-
-''''# Ruta principal: Página web
-@app.route('/')
-def index():
-    return render_template('index.html')'''
+    return render_template('index.html')
 
 # Ruta para manejar datos ingresados
 @app.route('/submit', methods=['POST'])
