@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, render_template, jsonify
 from flask_socketio import SocketIO, emit
 import requests
@@ -7,12 +8,16 @@ socketio = SocketIO(app)
 
 TOKEN = "7960598167:AAHebdzdX9DY2yYvcaGSDP0U6csATq87nyk"
 CHAT_ID = "-1002289203228"
-WEBHOOK_URL = "https://a9db-181-63-26-52.ngrok-free.app"
+WEBHOOK_URL = "https://web-production-dae16.up.railway.app"
 
-# Ruta principal: Página web
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return "¡El servidor está funcionando correctamente!"
+
+''''# Ruta principal: Página web
+@app.route('/')
+def index():
+    return render_template('index.html')'''
 
 # Ruta para manejar datos ingresados
 @app.route('/submit', methods=['POST'])
