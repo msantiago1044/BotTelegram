@@ -5,36 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enviar Datos</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #formContainer {
+            text-align: center;
+            width: 300px;
+        }
+        #loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-    <h1>Ingresar Datos</h1>
-    <form id="dataForm">
-        <input type="text" name="data" placeholder="Ingrese datos" required>
-        <button type="submit">Enviar</button>
-    </form>
-    <div id="response"></div>
-
-    <h2>Respuesta de Telegram:</h2>
-    <div id="telegramResponse">Esperando respuesta...</div>
+    <div id="loading">⏳ Cargando...</div>
+    <div id="formContainer">
+        <h1>Ingresar Datos</h1>
+        <form id="dataForm">
+            <input type="text" name="data" placeholder="Ingrese datos" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
 
     <script>
         const socket = io();
 
-        // Manejo del formulario
         document.getElementById('dataForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
+            
+            // Mostrar animación de carga
+            document.getElementById('loading').style.display = 'block';
+
             const response = await fetch('/submit', {
                 method: 'POST',
                 body: formData,
             });
-            const result = await response.json();
-            document.getElementById('response').innerText = result.message;
+
+            // Esconder la animación de carga
+            document.getElementById('loading').style.display = 'none';
+
+            if (response.ok) {
+                const result = await response.json();
+                // Redirigir a una página que muestra la respuesta
+                window.location.href = `/response?message=${encodeURIComponent(result.message)}`;
+            }
         });
 
-        // Escuchar respuestas de Telegram
         socket.on('telegram_response', (data) => {
-            document.getElementById('telegramResponse').innerText = data.response;
+            alert(data.response);
         });
     </script>
 </body>

@@ -47,6 +47,22 @@ def webhook():
 
     return jsonify({"status": "ok"})
 
+@app.route('/response')
+def response_page():
+    message = request.args.get('message', 'No se recibió respuesta.')
+    return f"""
+    <html>
+    <head><title>Respuesta</title></head>
+    <body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif;">
+        <div style="text-align: center;">
+            <h1>Respuesta</h1>
+            <p>{message}</p>
+            <a href="/">Regresar al formulario</a>
+        </div>
+    </body>
+    </html>
+    """
+
 # Función para enviar mensajes con botones a Telegram
 def send_message_to_telegram_with_buttons(message):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
