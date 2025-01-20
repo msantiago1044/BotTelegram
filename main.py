@@ -55,7 +55,7 @@ def response_page():
     <head><title>Respuesta</title></head>
     <body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif;">
         <div style="text-align: center;">
-            <h1>Respuesta</h1>
+            <h1>Respuesta de Telegram</h1>
             <p>{message}</p>
             <a href="/">Regresar al formulario</a>
         </div>

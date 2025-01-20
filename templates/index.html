@@ -30,7 +30,7 @@
     </style>
 </head>
 <body>
-    <div id="loading">⏳ Cargando...</div>
+    <div id="loading">⏳ Esperando respuesta de Telegram...</div>
     <div id="formContainer">
         <h1>Ingresar Datos</h1>
         <form id="dataForm">
@@ -45,27 +45,23 @@
         document.getElementById('dataForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            
-            // Mostrar animación de carga
-            document.getElementById('loading').style.display = 'block';
 
-            const response = await fetch('/submit', {
+            // Mostrar la pantalla de carga
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('formContainer').style.display = 'none';
+
+            await fetch('/submit', {
                 method: 'POST',
                 body: formData,
             });
 
-            // Esconder la animación de carga
-            document.getElementById('loading').style.display = 'none';
-
-            if (response.ok) {
-                const result = await response.json();
-                // Redirigir a una página que muestra la respuesta
-                window.location.href = `/response?message=${encodeURIComponent(result.message)}`;
-            }
-        });
-
-        socket.on('telegram_response', (data) => {
-            alert(data.response);
+            // Esperar respuesta desde Telegram
+            socket.on('telegram_response', (data) => {
+                if (data.response) {
+                    // Redirigir a la página de respuesta con el mensaje recibido
+                    window.location.href = `/response?message=${encodeURIComponent(data.response)}`;
+                }
+            });
         });
     </script>
 </body>
