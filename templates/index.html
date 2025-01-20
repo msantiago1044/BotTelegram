@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Datos</title>
+    <title>Enviar Nombre</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
     <style>
         body {
@@ -50,17 +50,17 @@
 <body>
     <div id="loading">⏳ Esperando respuesta de Telegram...</div>
     <div id="formContainer">
-        <h1>Ingresar Datos</h1>
-        <form id="dataForm">
-            <input type="text" name="data" placeholder="Ingrese datos" required>
+        <h1>Ingresar Nombre</h1>
+        <form id="nameForm">
+            <input type="text" name="name" placeholder="Ingrese su nombre" required>
             <button type="submit">Enviar</button>
-        </form>
+        </form>      
     </div>
 
     <script>
         const socket = io();
 
-        document.getElementById('dataForm').addEventListener('submit', async (e) => {
+        document.getElementById('nameForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
 
@@ -68,7 +68,7 @@
             document.getElementById('loading').style.display = 'block';
             document.getElementById('formContainer').style.display = 'none';
 
-            await fetch('/submit', {
+            await fetch('/submit_name', {
                 method: 'POST',
                 body: formData,
             });
