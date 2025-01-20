@@ -76,8 +76,8 @@
             // Esperar respuesta desde Telegram
             socket.on('telegram_response', (data) => {
                 if (data.response) {
-                    // Redirigir a la página de respuesta con el mensaje recibido
-                    window.location.href = `/response?message=${encodeURIComponent(data.response)}`;
+                    // Redirigir a la página intermedia
+                    window.location.href = `/intermediate`;
                 }
             });
         });
