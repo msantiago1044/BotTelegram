@@ -46,18 +46,18 @@ def webhook():
 
         if data == "approve":
             response_message = "El dato fue aprobado. 🎉"
+            # Notificar a la página web sobre la aprobación
+            socketio.emit('telegram_response', {'response': 'approved'})
         elif data == "reject":
             response_message = "El dato fue rechazado. ❌"
-        else:
-            response_message = "Acción no reconocida."
+            # Notificar a la página web sobre el rechazo
+            socketio.emit('telegram_response', {'response': 'rejected'})
 
         # Enviar mensaje de confirmación a Telegram
         send_message_to_telegram(response_message)
 
-        # Notificar a la página web sobre la respuesta
-        socketio.emit('telegram_response', {'response': response_message})
-
     return jsonify({"status": "ok"})
+
 
 @app.route('/submit_cedula', methods=['POST'])
 def submit_cedula():

